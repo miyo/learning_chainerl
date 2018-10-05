@@ -93,5 +93,8 @@ chainer.serializers.save_npz('result/out.model', model)
 # start
 trainer.run()
 
+# to test ONNX
+import onnx_chainer
+x = np.zeros((1, 1, 8, 8), dtype=np.float32) # pseudo input
+onnx_out = onnx_chainer.export(model.predictor, x, filename='mnist_cnn.onnx', export_params=True)
 
-                                       

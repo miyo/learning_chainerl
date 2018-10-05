@@ -63,14 +63,16 @@ trainer.extend(extensions.PrintReport(['epoch',
                                        'validation/main/accuracy',
                                        'elapsed_time'])) # print status
 trainer.extend(extensions.dump_graph('main/loss')) # neural network structure
-trainer.extend(extensions.PlotReport(['main/loss', 'validation/main/loss'], 'epoch', file_name='loss.png')) # accuracy graph
-trainer.extend(extensions.PlotReport(['main/accuracy', 'validation/main/accuracy'], 'epoch', file_name='accuracy.png')) # accuracy graph
+#trainer.extend(extensions.PlotReport(['main/loss', 'validation/main/loss'], 'epoch', file_name='loss.png')) # accuracy graph
+#trainer.extend(extensions.PlotReport(['main/accuracy', 'validation/main/accuracy'], 'epoch', file_name='accuracy.png')) # accuracy graph
 #trainer.extend(extensions.snapshot(), trigger=(100, 'epoch')) # save a snapshot
 #trainer.serializers.load_npz('result/snapshot_iter_500', trainer) # to restart
-#chainer.serializers.save_npz('result/out.model', model)
+#trainer.serializers.save_npz('result/out.model', model)
 
 # start
 trainer.run()
-
-
                                        
+# to test ONNX
+import onnx_chainer
+x = np.zeros((1, 1, 8, 8), dtype=np.float32) # pseudo input
+onnx_out = onnx_chainer.export(model.predictor, x, filename='mnist_dnn.onnx', export_params=True)
